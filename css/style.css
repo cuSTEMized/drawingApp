@@ -67,12 +67,42 @@ input{
     height: 0px;
     display: none;
 }
+
 .colorBox {
     float: left;
     
     display:inline-block;
     width: 50px;
     height: 50px;
+    border-radius: 25px;
+
+    border: 5px solid black;
+    /*border: 1px solid black;*/
+    
+    cursor:pointer;
+    
+    margin:10px;
+    
+    -webkit-transition: all 100ms ease-in;
+    -moz-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
+}
+
+#popup {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: 100;
+}
+.imageBox{
+    float: left;
+    
+    display:inline-block;
+    width: 200px;
+    height: 200px;
     border-radius: 25px;
 
     border: 5px solid black;
@@ -86,10 +116,16 @@ input{
     -moz-transition: all 100ms ease-in;
     transition: all 100ms ease-in;
 }
+.imageBox img{
+    width: 100%;
+    height: 100%;
+}
+
 #paletteBox {
     -webkit-appearance:none;
     -moz-appearance:none;
     appearance:none;
+    z-index: 101;
 }
 #paletteBox input{
     margin:0;padding:0;

@@ -147,10 +147,11 @@ function resourceLoaded() {
 };
 
 // Creates a canvas element, loads images, adds events, and draws the canvas for the first time.
-function initCanvas() {
-
+function initCanvas(imageSrc) {
+    // Clear
+    document.getElementById('canvasDiv').innerHTML = '';
+    
     // Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
-
     // canvas 2 will be the image layer
     canvas2 = document.createElement('canvas');
     canvas2.setAttribute('width', canvasWidth);
@@ -172,19 +173,19 @@ function initCanvas() {
 	canvas2 = G_vmlCanvasManager.initElement(canvas2);
     }
     context1 = canvas1.getContext("2d");
-    context2 = canvas2.getContext("2d"); 
+    context2 = canvas2.getContext("2d");
     // Note: The above code is a workaround for IE 8 and lower. Otherwise we could have used:
     //     context = document.getElementById('canvas').getContext("2d");
 
+    clearCanvas();
     resizeCanvas();
     
     // Load image
     outlineImage.onload = resourceLoaded;
-    outlineImage.src = "img/cat.png";
+    outlineImage.src = imageSrc;
     
     // Ensure images and resources are loaded
     //createUserEvents();
-    resourceLoaded();
-
+    resourceLoaded();    
 };
 
