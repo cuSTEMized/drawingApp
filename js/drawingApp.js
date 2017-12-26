@@ -1,6 +1,6 @@
 // Globals
-var canvas,
-    context,
+var canvas1, canvas2,
+    context1, context2,
     canvasWidth,
     canvasHeight,
     outlineImage = new Image(),
@@ -21,14 +21,14 @@ var canvas,
 
 // Resize the canvas
 function resizeCanvas() {
-    canvas.width = canvasWidth = window.innerWidth;
-    canvas.height = canvasHeight = window.innerHeight;
+    canvas2.width = canvas1.width = canvasWidth = window.innerWidth;
+    canvas2.height = canvas1.height = canvasHeight = window.innerHeight;
     redraw();
 };
 
 // Clears the canvas.
 function clearCanvas() {
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
+    context1.clearRect(0, 0, canvasWidth, canvasHeight);
 };
 
 // Adds a point to the drawing array.
@@ -43,45 +43,50 @@ function addClick(x, y, dragging) {
     clickSize.push(radius);
 };
 
-function redraw(color, radius){
-    context.lineJoin = "round";
-    context.imageSmoothingEnabled = true;
+function redraw(){
+    context1.lineJoin = "round";
+    context1.imageSmoothingEnabled = true;
     
     for(var i=0; i < clickX.length; i++)
     {
-	context.beginPath();
+	context1.beginPath();
 	if(clickDrag[i] && i){
-	    context.moveTo(clickX[i-1], clickY[i-1]);
+	    context1.moveTo(clickX[i-1], clickY[i-1]);
 	}else{
-	    context.moveTo(clickX[i]-1, clickY[i]);
+	    context1.moveTo(clickX[i]-1, clickY[i]);
 	}
-	context.lineTo(clickX[i], clickY[i]);
-	context.closePath();
+	context1.lineTo(clickX[i], clickY[i]);
+	context1.closePath();
 	
-	context.strokeStyle = clickColor[i];
-	context.lineWidth = clickSize[i];
+	context1.strokeStyle = clickColor[i];
+	context1.lineWidth = clickSize[i];
 	
 	// smooth
-	//context.shadowColor = clickColor[i];
-	//context.shadowBlur = 5;
+	//context1.shadowColor = clickColor[i];
+	//context1.shadowBlur = 5;
 	
-	context.stroke();
+	context1.stroke();
     }
 
     // scale image
-    var minSide = Math.min(canvasWidth, canvasHeight-80) // 80 for offset of palette
+    var minSide = Math.min(canvasWidth-20, canvasHeight-100); // 80 for offset of palette
     var sx, sy;
+    context2.clearRect(0,0,canvasWidth,canvasHeight); // clear
     if(canvasWidth > canvasHeight) {
-	sy = 0;
-	sx = (canvasWidth - minSide)/2;
+	sy = 10;
+	sx = (canvasWidth - minSide)/2 + 10;
+	context2.drawImage(outlineImage,
+			   sx, sy,
+			   minSide * outlineImage.width/outlineImage.height, minSide
+			  );    
     } else {
-	sx = 0;
-	sy = (canvasHeight - 80 - minSide * outlineImage.height / outlineImage.width)/2;
+	sx = 10;
+	sy = (canvasHeight - 80 - minSide * outlineImage.height / outlineImage.width)/2 + 10;
+	context2.drawImage(outlineImage,
+			   sx, sy,
+			   minSide, minSide * outlineImage.height / outlineImage.width
+			  );    
     }
-    context.drawImage(outlineImage,
-		      sx, sy,
-		      minSide, minSide * outlineImage.height / outlineImage.width
-		     );    
 }
 
 // Add mouse and touch event listeners to the canvas
@@ -93,16 +98,17 @@ function createUserEvents() {
 	    mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - this.offsetLeft,
 	    mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetTop;
 	
-	    console.log('pressing');
+	    //console.log('pressing');
 	    paint = true;
 	    addClick(mouseX, mouseY, false);
-	    redraw(color, radius);
+	    redraw();
         },
 	
 	drag = function (e) {	    
 	    var mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - this.offsetLeft,
 		mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - this.offsetTop;
 	    
+	    //console.log('dragging');
 	    if (paint) {
 		addClick(mouseX, mouseY, true);
 		redraw(color, radius);
@@ -119,17 +125,16 @@ function createUserEvents() {
 	    paint = false;
 	};
     
-    // Add mouse event listeners to canvas element
-    canvas.addEventListener("mousedown", press, false);
-    canvas.addEventListener("mousemove", drag, false);
-    canvas.addEventListener("mouseup", release);
-    canvas.addEventListener("mouseout", cancel, false);
-
-    // Add touch event listeners to canvas element
-    canvas.addEventListener("touchstart", press, false);
-    canvas.addEventListener("touchmove", drag, false);
-    canvas.addEventListener("touchend", release, false);
-    canvas.addEventListener("touchcancel", cancel, false);
+    // Add mouse event listeners to canvas2 element since it's the one on top
+    canvas2.addEventListener("mousedown", press, false);
+    canvas2.addEventListener("mousemove", drag, false);
+    canvas2.addEventListener("mouseup", release);
+    canvas2.addEventListener("mouseout", cancel, false);
+    // Add touch event listeners
+    canvas2.addEventListener("touchstart", press, false);
+    canvas2.addEventListener("touchmove", drag, false);
+    canvas2.addEventListener("touchend", release, false);
+    canvas2.addEventListener("touchcancel", cancel, false);
 };
 
 // Calls the redraw function after all neccessary resources are loaded.
@@ -145,18 +150,34 @@ function resourceLoaded() {
 function initCanvas() {
 
     // Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
-    canvas = document.createElement('canvas');
-    canvas.setAttribute('width', canvasWidth);
-    canvas.setAttribute('height', canvasHeight);
-    canvas.setAttribute('id', 'canvas');
-    document.getElementById('canvasDiv').appendChild(canvas);
+
+    // canvas 2 will be the image layer
+    canvas2 = document.createElement('canvas');
+    canvas2.setAttribute('width', canvasWidth);
+    canvas2.setAttribute('height', canvasHeight);
+    canvas2.setAttribute('id', 'layer2');
+    canvas2.setAttribute('style', 'z-index: 2');
+    document.getElementById('canvasDiv').appendChild(canvas2);
+
+    // canvas 1 will be the drawing layer
+    canvas1 = document.createElement('canvas');
+    canvas1.setAttribute('width', canvasWidth);
+    canvas1.setAttribute('height', canvasHeight);
+    canvas1.setAttribute('id', 'layer1');
+    canvas1.setAttribute('style', 'z-index: 1');
+    document.getElementById('canvasDiv').appendChild(canvas1);
+
     if (typeof G_vmlCanvasManager !== "undefined") {
-	canvas = G_vmlCanvasManager.initElement(canvas);
+	canvas1 = G_vmlCanvasManager.initElement(canvas1);
+	canvas2 = G_vmlCanvasManager.initElement(canvas2);
     }
-    context = canvas.getContext("2d"); // Grab the 2d canvas context
+    context1 = canvas1.getContext("2d");
+    context2 = canvas2.getContext("2d"); 
     // Note: The above code is a workaround for IE 8 and lower. Otherwise we could have used:
     //     context = document.getElementById('canvas').getContext("2d");
 
+    resizeCanvas();
+    
     // Load image
     outlineImage.onload = resourceLoaded;
     outlineImage.src = "img/cat.png";
