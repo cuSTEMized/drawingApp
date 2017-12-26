@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<link rel="stylesheet" href="css/style.css"/>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+    </head>
+    
+    <body onload='init()'>
+	<nav>
+	    <input type="radio" name="pen" value="15" id="bigPen" checked=true/>
+	    <label class="myButton colorBox" for="bigPen"><img src="icons/brush.svg" width="100%"></label>
+
+	    <input type="radio" name="pen" value="5" id="smallPen"/>
+	    <label class="myButton colorBox" for="smallPen"><img src="icons/pencil.svg" width="100%"></label>
+
+	    <div class="vl"></div>
+	    
+	    <div id="paletteBox">
+	    </div>
+	</nav>
+	
+	<div id="canvasDiv">
+	</div>
+	    
+	<!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+	<script type="text/javascript" src="js/drawingApp.js"></script>
+	<script type="text/javascript">
+	 function init() {
+	     // Create palette box
+	     colors = ["crimson", "orange", "gold", "forestgreen", "steelblue", "darkorchid", "orchid", "white", "grey"]
+	     for (var i = 0; i < colors.length; i++) {
+	         d = document.getElementById("paletteBox").innerHTML
+	         document.getElementById("paletteBox").innerHTML = d + '<input type="radio" name="color" value="' + colors[i] +'" id="' + i + '"/><label class="colorBox" for="' + i + '" style="background-color:' + colors[i] + '"></label>'
+	     }
+
+	     d = document.getElementById("paletteBox").innerHTML
+	         document.getElementById("paletteBox").innerHTML = d + '<input checked=true type="radio" name="color" value="black" id="defaultColor"/><label class="colorBox" for="defaultColor" style="background-color:black"></label>'
+
+	     // Create canvas
+	     initCanvas();
+	     window.addEventListener('resize', resizeCanvas(), false);	     
+
+	     // Check buttons
+	     $('input:radio[name=color]').change(function () {
+		 color = $(this).val();
+		 //console.log(color);
+	     });
+	     $('input:radio[name=pen]').change(function () {
+		 radius = $(this).val();
+		 //console.log(color);
+	     });
+	     // Pen size
+	     document.getElementById('smallPen').addEventListener('click', function() {
+		 penWidth = 5;
+	     }, false);
+	     document.getElementById('bigPen').addEventListener('click', function() {
+		 penWidth = 15;
+	     }, false);
+	     
+	 }
+	 
+	</script>
+
+
+    </body>
+</html>
