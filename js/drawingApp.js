@@ -23,12 +23,18 @@ var canvas1, canvas2,
 function resizeCanvas() {
     canvas2.width = canvas1.width = canvasWidth = window.innerWidth;
     canvas2.height = canvas1.height = canvasHeight = window.innerHeight;
-    redraw();
 };
 
 // Clears the canvas.
 function clearCanvas() {
+    //console.log('cleared');
     context1.clearRect(0, 0, canvasWidth, canvasHeight);
+    // reset
+    clickX = [];
+    clickY = [];
+    clickDrag = [];
+    clickColor = [];
+    clickSize = [];
 };
 
 // Adds a point to the drawing array.
