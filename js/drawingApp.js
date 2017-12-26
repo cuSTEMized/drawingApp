@@ -62,26 +62,26 @@ function redraw(){
 	context1.lineWidth = clickSize[i];
 	
 	// smooth
-	//context1.shadowColor = clickColor[i];
-	//context1.shadowBlur = 5;
+	context1.shadowColor = clickColor[i];
+	context1.shadowBlur = 5;
 	
 	context1.stroke();
     }
 
     // scale image
-    var minSide = Math.min(canvasWidth-20, canvasHeight-100); // 80 for offset of palette
+    var minSide = Math.min(canvasWidth, canvasHeight-80); // 80 for offset of palette
     var sx, sy;
     context2.clearRect(0,0,canvasWidth,canvasHeight); // clear
     if(canvasWidth > canvasHeight) {
-	sy = 10;
-	sx = (canvasWidth - minSide)/2 + 10;
+	sy = 0;
+	sx = (canvasWidth - minSide)/2;
 	context2.drawImage(outlineImage,
 			   sx, sy,
 			   minSide * outlineImage.width/outlineImage.height, minSide
 			  );    
     } else {
-	sx = 10;
-	sy = (canvasHeight - 80 - minSide * outlineImage.height / outlineImage.width)/2 + 10;
+	sx = 0;
+	sy = (canvasHeight - 80 - minSide * outlineImage.height / outlineImage.width)/2;
 	context2.drawImage(outlineImage,
 			   sx, sy,
 			   minSide, minSide * outlineImage.height / outlineImage.width
