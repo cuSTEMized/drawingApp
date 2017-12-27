@@ -58,5 +58,16 @@ You will also want to zipalign your app before uploading onto Google Play:
 zipalign -v 4 android-release-unsigned.apk CuSTEMized_Coloring_App_v1.apk 
 ```
 
-Step 7. Upload to Google Play!
+Step 7. Commit to Github
 
+Do not need to commit all files. Run:
+```
+cordova platform save
+cordova plugin save
+```
+Now you can ignore the platform and plugin folders in your commit for example.
+
+After fetching repo on another machine you just run following command to generate and fetch plugins and platforms automatically
+```
+cordova prepare
+```
