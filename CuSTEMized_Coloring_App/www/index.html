@@ -6,11 +6,15 @@
     </head>
     
     <body onload='init()'>
-	<div id="popup" style="display: none;">
+	
+	<div id="imagePopup" style="display: none; z-index: 300;" class="popup scroll">
+	</div>
+
+	<div id="paletteBox" style="display: none; z-index: 500;" class="popup scroll">
 	</div>
 	
 	<nav>
-	    <label class="myButton colorBox" onclick="popup()"><img src="icons/folder.svg" width="100%"></label>
+	    <label class="myButton colorBox" onclick="closepop('paletteBox'); popup('imagePopup')"><img src="icons/folder.svg" width="100%"></label>
 
 	    <div class="vl"></div>
 	    
@@ -21,11 +25,10 @@
 	    <label class="myButton colorBox" for="smallPen"><img src="icons/pencil.svg" width="100%"></label>
 
 	    <div class="vl"></div>
-	    
-	    <div id="paletteBox">
-	    </div>
-	</nav>
 
+	    <label class="myButton colorBox" onclick="closepop('imagePopup'); popup('paletteBox')"><img src="icons/rainbow.svg" width="100%"></label>
+	</nav>
+	
 	<div id="canvasDiv">
 	</div>
 	    
@@ -34,18 +37,25 @@
 	<script type="text/javascript">
 	 // Select new image
 	 var imageSrc;	 
-	 function popup() {
-	     var x = document.getElementById("popup");
+	 function popup(id) {
+	     var x = document.getElementById(id);
 	     if (x.style.display === "none") {
 		 x.style.display = "block";
 	     } else {
 		 x.style.display = "none";
 	     }
 	 }
+	 function closepop(id) {
+	     var x = document.getElementById(id);
+	     x.style.display = "none";
+	 }
 
 	 function init() {
 	     // Create palette box
-	     colors = ["crimson", "orange", "gold", "forestgreen", "steelblue", "darkorchid", "orchid", "white", "grey"]
+	     colors = [
+		 'Salmon', 'Crimson', 'FireBrick', 'DarkRed', 'Pink', 'HotPink', 'MediumVioletRed', 'Plum', 'Orchid', 'MediumOrchid', 'DarkOrchid', 'Indigo', 'MediumSlateBlue', 'DarkSlateBlue', 'Coral', 'OrangeRed', 'Orange', 'Yellow', 'YellowGreen', 'LightGreen', 'MediumSeaGreen', 'Green', 'DarkGreen', 'Aquamarine', 'Turquoise', 'MediumAquamarine', 'LightSeaGreen', 'Teal', 'PowderBlue', 'SkyBlue', 'RoyalBlue', 'DarkBlue'
+	     ]
+
 	     for (var i = 0; i < colors.length; i++) {
 	         d = document.getElementById("paletteBox").innerHTML
 	         document.getElementById("paletteBox").innerHTML = d + '<input type="radio" name="color" value="' + colors[i] +'" id="' + i + '"/><label class="colorBox" for="' + i + '" style="background-color:' + colors[i] + '"></label>'
@@ -68,8 +78,8 @@
 		 'img/rooster.png'
 	     ];
 	     for (var i = 0; i < images.length; i++) {
-	         d = document.getElementById("popup").innerHTML
-	         document.getElementById("popup").innerHTML = d + '<input type="radio" name="image" value="' + images[i] +'" id="img' + i + '"/><label class="imageBox" for="img' + i + '"><img src="' + images[i] + '"></label>'
+	         d = document.getElementById("imagePopup").innerHTML
+	         document.getElementById("imagePopup").innerHTML = d + '<input type="radio" name="image" value="' + images[i] +'" id="img' + i + '"/><label class="imageBox" for="img' + i + '"><img src="' + images[i] + '"></label>'
 	     };
 
 	     // Random image to initialize
@@ -81,13 +91,14 @@
 	     // Check buttons
 	     $('input:radio[name=color]').change(function () {
 		 color = $(this).val();
+		 closepop('paletteBox'); // close popup
 	     });
 	     $('input:radio[name=pen]').change(function () {
 		 radius = $(this).val();
 	     });
 	     $('input:radio[name=image]').change(function () {
 		 imageSrc = $(this).val();
-		 popup(); // close popup
+		 closepop('imagePopup'); // close popup
 		 initCanvas(imageSrc);
 		 //console.log(imageSrc);
 	     });

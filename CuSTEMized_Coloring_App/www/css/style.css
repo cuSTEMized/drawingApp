@@ -33,7 +33,7 @@ nav {
 
     color: white;
     background-image: url("wood2.jpg");
-    border-top: 5px solid black;
+    border-top: 2px solid black;
 
     z-index: 100;
     overflow: scroll;
@@ -46,7 +46,7 @@ nav {
     height: 80px;
     border-radius: 25px;
 
-    border: 5px solid black;
+    border: 2px solid black;
     /*border: 1px solid black;*/
 
     cursor:pointer;
@@ -74,9 +74,9 @@ input{
     display:inline-block;
     width: 50px;
     height: 50px;
-    border-radius: 25px;
+    border-radius:15px;
 
-    border: 5px solid black;
+    border: 2px solid black;
     /*border: 1px solid black;*/
     
     cursor:pointer;
@@ -86,40 +86,8 @@ input{
     -webkit-transition: all 100ms ease-in;
     -moz-transition: all 100ms ease-in;
     transition: all 100ms ease-in;
-}
-
-#popup {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    z-index: 100;
-}
-.imageBox{
-    float: left;
     
-    display:inline-block;
-    width: 200px;
-    height: 200px;
-    border-radius: 25px;
-
-    border: 5px solid black;
-    /*border: 1px solid black;*/
-
-    cursor:pointer;
-    
-    margin:10px;
-    
-    -webkit-transition: all 100ms ease-in;
-    -moz-transition: all 100ms ease-in;
-    transition: all 100ms ease-in;
-}
-.imageBox img{
-    width: 200px;
-    height: 200px;
-    border-radius: 15px;
+    overflow: hidden;
 }
 
 #paletteBox {
@@ -138,13 +106,61 @@ input:checked +.colorBox{
     -webkit-filter: none;
     -moz-filter: none;
     filter: none;
-    border: 5px solid white;
+    border: 2px solid white;
 }
 
 
 .vl {
     float: left;
     margin: 0px 10px 0px 10px;
-    border-left: 5px solid black;
+    border-left: 2px solid black;
     height: 100%;
+}
+
+
+
+
+.popup {
+    background-image: url("wood2.jpg");
+    border-bottom: 2px solid black;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 200px;
+    background-color: white;
+    z-index: 100;
+}
+
+.imageBox{
+    float: left;
+    background-color: white;
+    display:inline-block;
+    height: 180px;
+    width: 180px;
+    border-radius: 25px;
+
+    border: 2px solid black;
+    /*border: 1px solid black;*/
+
+    cursor:pointer;
+    
+    margin: 10px;
+    
+    -webkit-transition: all 100ms ease-in;
+    -moz-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
+}
+.imageBox img{
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+}
+
+.scroll {
+    overflow: auto;
+    white-space: nowrap;
+}
+.scroll div {
+    display: inline-block;
 }
